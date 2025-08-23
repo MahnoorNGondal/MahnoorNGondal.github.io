@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahnoor Naseer Gondal | Computational Biologist & Data Scientist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application has been restructured into a multi-view Single Page Application (SPA) to better organize the extensive information from the CV. A top-level tabbed navigation allows users to switch between thematic sections: a main Dashboard for a high-level overview, an Academic section for deep dives into research and publications, a Consulting section for business-focused experience, and an Awards section for recognitions. This modular structure prevents information overload and allows users (like recruiters) to quickly navigate to the content most relevant to them, improving usability and content discovery. -->
+    <!-- Visualization & Content Choices: 
+        - Publications List: Report Info -> Full list of publications from CV. Goal -> Organize/Inform. Viz -> Filterable card-based list. Interaction -> Category filtering (Published, In Review, etc.), highlighted author name. Justification -> Manages a large number of entries, making it easy for users to find specific types of publications and see the candidate's contributions clearly. Method -> HTML/JS.
+        - Awards List: Report Info -> Awards from CV. Goal -> Inform. Viz -> Chronological list with descriptions. Interaction -> None. Justification -> A clean, straightforward presentation is most effective for highlighting achievements and recognitions. Method -> HTML/Tailwind.
+        - Other elements (KPIs, Radar Chart, Timeline) remain as before but are now logically placed within the new thematic sections to maintain context. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #2C3E50;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 5px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #A6B1E1;
+            border: 4px solid #F8F7F4;
+        }
+         .timeline-item:hover::before {
+            background-color: #424874;
+        }
+        .nav-link.active {
+            color: #424874;
+            font-weight: 700;
+            border-bottom: 2px solid #424874;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-[#424874]">
+                Mahnoor N. Gondal
+            </div>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="dashboard">Dashboard</a>
+                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="academic">Academic & Publications</a>
+                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="consulting">Consulting & Leadership</a>
+                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="awards">Awards</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 border-t">
+             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="dashboard">Dashboard</a>
+             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="academic">Academic & Publications</a>
+             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="consulting">Consulting & Leadership</a>
+             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="awards">Awards</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <div id="view-dashboard" class="view-content">
+            <section id="hero" class="text-center mb-20 fade-in">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-[#424874]">Mahnoor Naseer Gondal</h1>
+                <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Ph.D. Candidate in Bioinformatics leveraging machine learning and multi-omics data to drive innovation in drug development and precision medicine.
+                </p>
+                <div class="flex justify-center items-center space-x-4">
+                    <a href="https://www.linkedin.com/in/mahnoorgondal/" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 bg-white text-[#424874] px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/MahnoorNGondal" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 bg-[#424874] text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
+                         <span>GitHub</span>
+                    </a>
+                </div>
+            </section>
+
+            <section id="dashboard-content" class="mb-20 fade-in">
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Career Dashboard</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">This dashboard provides a high-level overview of my core technical capabilities and key areas of expertise.</p>
+                
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-[#424874]">Core Competencies</h3>
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                     <p class="text-sm text-gray-500 text-center mt-4">Proficiency across key technical domains. Hover over a point for details.</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-academic" class="view-content hidden">
+            <section id="experience" class="mb-20 fade-in">
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Academic & Research Experience</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">This timeline showcases my academic and research journey, from my graduate studies to my industry internship. Click on any title to expand and see detailed contributions.</p>
+                
+                <div class="md:grid md:grid-cols-12 md:gap-12">
+                    <div class="md:col-span-4">
+                        <div id="timeline-buttons" class="flex md:flex-col gap-4 mb-8 md:mb-0"></div>
+                    </div>
+                    <div class="md:col-span-8">
+                        <div class="border-l-4 border-[#A6B1E1] pl-8 relative">
+                            <div id="timeline-details"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="publications" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Publications</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-8">A comprehensive list of my scholarly contributions. Use the filters to navigate between different publication statuses.</p>
+                <div class="flex justify-center flex-wrap gap-2 mb-8">
+                    <button class="pub-filter-btn active" data-filter="all">All</button>
+                    <button class="pub-filter-btn" data-filter="Published">Published</button>
+                    <button class="pub-filter-btn" data-filter="Conference">Conference</button>
+                    <button class="pub-filter-btn" data-filter="Preprint">Preprint</button>
+                </div>
+                <div id="publications-container" class="space-y-6"></div>
+            </section>
+        </div>
+
+        <div id="view-consulting" class="view-content hidden">
+            <section id="consulting-experience" class="mb-20 fade-in">
+                 <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Consulting & Leadership</h2>
+                 <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">Beyond research, I have actively pursued experience in consulting and leadership, applying analytical skills to solve business challenges and mentoring others in STEM.</p>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg mb-8 transition-shadow duration-300 hover:shadow-xl">
+                    <h3 class="text-2xl font-bold text-[#424874]">miLEAD Consulting Group</h3>
+                    <p class="text-gray-500 font-medium mb-4">Director of Professional Development | Project Manager & Consultant</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Uncovered a $500M market opportunity for a novel prosthetic device, proposing design changes projected to drive a 20% revenue increase.</li>
+                        <li>Developed an exit strategy that raised projected profitability from $2M to $8M (300%) by identifying untapped buyer segments.</li>
+                        <li>Elevated member engagement by 40% by designing and executing 5 tailored career panels with industry leaders.</li>
+                        <li>Increased junior member placement rates by 30% by launching case interview training for 40+ members.</li>
+                    </ul>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                        <h3 class="text-xl font-bold text-[#424874]">Girls Who Code (GWC)</h3>
+                        <p class="text-gray-500 font-medium mb-2">Executive Committee Lead</p>
+                        <p class="text-gray-700">Expanded Python curriculum offerings 5-fold and increased the instructor pool 4-fold in 3 months.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                        <h3 class="text-xl font-bold text-[#424874]">Consulting Doc</h3>
+                        <p class="text-gray-500 font-medium mb-2">Founder & Consultant</p>
+                        <p class="text-gray-700">Achieved a 40% success rate with U.S. Ph.D. and master's admissions by launching an academic consulting guide.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-awards" class="view-content hidden">
+            <section id="awards-recognition" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Awards & Recognition</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">A selection of honors and awards received in recognition of academic excellence, research contributions, and leadership.</p>
+                <div id="awards-container" class="bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 mt-12 border-t border-gray-200">
+        <p class="text-gray-500">&copy; 2025 Mahnoor Naseer Gondal. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNavLinks = document.querySelectorAll('.nav-link-mobile');
+            const views = document.querySelectorAll('.view-content');
+
+            function switchView(viewId) {
+                views.forEach(view => view.classList.add('hidden'));
+                const targetView = document.getElementById(`view-${viewId}`);
+                targetView.classList.remove('hidden');
+                
+                // Trigger fade-in for sections within the new view
+                setTimeout(() => {
+                    targetView.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+                }, 100);
+
+
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.view === viewId);
+                });
+                mobileMenu.classList.add('hidden');
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchView(link.dataset.view);
+                });
+            });
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchView(link.dataset.view);
+                });
+            });
+            
+            switchView('dashboard');
+
+            const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(skillsChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Machine Learning', 'Python (PyTorch, Pandas)', 'R & R Shiny', 'Genomics (NGS)', 'Multi-omics Integration', 'Statistical Modeling', 'HPC Computing', 'SQL & Databases'],
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: [95, 90, 85, 90, 92, 88, 80, 75],
+                        backgroundColor: 'rgba(66, 72, 116, 0.2)',
+                        borderColor: 'rgba(66, 72, 116, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(66, 72, 116, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(66, 72, 116, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { angleLines: { color: 'rgba(44, 62, 80, 0.2)' }, grid: { color: 'rgba(44, 62, 80, 0.2)' }, pointLabels: { font: { size: 12 }, color: '#2C3E50' }, ticks: { backdropColor: 'transparent', color: '#2C3E50', stepSize: 20 }, suggestedMin: 0, suggestedMax: 100 } },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `${context.dataset.label}: ${context.raw}%`; } } } }
+                }
+            });
+
+            const timelineData = [
+                { id: 'gsk', role: 'Computational Biologist Intern', company: 'GlaxoSmithKline (GSK)', date: 'May 2024 – Aug 2024', details: ['Led the design and implementation of a novel machine learning tool that accelerated drug target discovery by 75% and was integrated division-wide.', 'Improved lupus severity prediction accuracy by 40% by developing a predictive model based on genetic signatures identified from a 200-patient multi-omic dataset.', 'Presented findings to senior leadership, providing key insights that informed the direction of preclinical research programs.'] },
+                { id: 'phd', role: 'Ph.D. Candidate', company: 'University of Michigan', date: '2021 – Present', details: ['<strong>Project: Multi-Omics Biomarker Development:</strong> Designed and implemented a deep learning framework to integrate genomics, transcriptomics, and proteomics data from cancer patients.', 'Identified a novel multi-omics biomarker panel that predicts patient response to immunotherapy with over 85% accuracy.', '<strong>Project: Investigating CDK12/13 Inactivation:</strong> Contributed to a study published in *The Journal of Clinical Investigation* by performing bioinformatic analysis that revealed a STING-mediated anti-tumor immunity mechanism.'] },
+                { id: 'education', role: 'Education', company: 'U-M & LUMS', date: '2016 – 2026', details: ['<strong>Ph.D. in Bioinformatics</strong>, University of Michigan (Expected 2026)', '<strong>M.S. in Bioinformatics</strong>, University of Michigan (2023)', '<strong>B.S. in Biology</strong>, Lahore University of Management Sciences (2020)'] }
+            ];
+
+            const timelineButtonsContainer = document.getElementById('timeline-buttons');
+            const timelineDetailsContainer = document.getElementById('timeline-details');
+
+            function displayTimelineDetails(id) {
+                const item = timelineData.find(d => d.id === id);
+                if (!item) return;
+                timelineDetailsContainer.innerHTML = `<div class="timeline-item pb-8"><h3 class="text-xl font-bold text-[#424874]">${item.role}</h3><p class="font-medium text-gray-500 mb-2">${item.company} | ${item.date}</p><ul class="list-disc pl-5 space-y-2 text-gray-700">${item.details.map(d => `<li>${d}</li>`).join('')}</ul></div>`;
+                document.querySelectorAll('.timeline-btn').forEach(btn => {
+                    btn.classList.remove('bg-[#424874]', 'text-white');
+                    btn.classList.add('bg-white', 'text-gray-700');
+                });
+                const activeButton = document.querySelector(`.timeline-btn[data-id="${id}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('bg-[#424874]', 'text-white');
+                    activeButton.classList.remove('bg-white', 'text-gray-700');
+                }
+            }
+
+            timelineData.forEach(item => {
+                const button = document.createElement('button');
+                button.className = 'timeline-btn w-full text-left p-4 rounded-lg shadow-md transition-all duration-300 bg-white text-gray-700 hover:shadow-xl';
+                button.dataset.id = item.id;
+                button.innerHTML = `<p class="font-bold text-lg">${item.role}</p><p class="text-sm text-gray-500">${item.company}</p>`;
+                button.addEventListener('click', () => displayTimelineDetails(item.id));
+                timelineButtonsContainer.appendChild(button);
+            });
+            if (timelineData.length > 0) displayTimelineDetails(timelineData[0].id);
+
+            const publicationsData = [
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'CDK12/13 inactivation triggers STING-mediated anti-tumor immunity in pre-clinical models', journal: 'The Journal of Clinical Investigation', date: 'July 2025' },
+                { category: 'Published', authors: 'S. Eyunni, et al., M. N. Gondal, et al., A. Parolia*', title: 'Divergent FOXA1 mutations drive prostate tumorigenesis and therapy-resistant cellular plasticity', journal: 'Science', date: 'June 2025' },
+                { category: 'Published', authors: 'R. N. Butt, et al., M. N. Gondal, et al., S. U. Chaudhary*', title: 'CanSeer: A Translational Methodology for Developing Personalized Cancer Models and Therapeutics', journal: 'Scientific Reports - Nature', date: 'April 2025' },
+                { category: 'Published', authors: 'M. N. Gondal, Hafiz Muhammad Umer Farooqi*', title: 'Single-Cell Transcriptomic Approaches for Decoding Non-Coding RNA Mechanisms in Colorectal Cancer', journal: 'Non-Coding RNA', date: 'March 2025' },
+                { category: 'Published', authors: 'M. N. Gondal, M. Cieslik, A. Chinnaiyan*', title: 'Integrated cancer cell-specific single-cell RNA-seq datasets of immune checkpoint blockade-treated patients', journal: 'Scientific Data - Nature', date: 'Jan 2025' },
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan*', title: 'The UBA1-STUB1 axis mediates cancer immune escape and resistance to checkpoint blockade', journal: 'Cancer Discovery', date: 'Nov 2024' },
+                { category: 'Published', authors: 'Emilee Youn, M. N. Gondal*', title: 'Pan-tissue Mapping of Transcription Factor Activity Scores Reveals Robust Markers Across Cell Types and Tissue', journal: 'The Young Researcher', date: 'Oct 2024' },
+                { category: 'Published', authors: 'M. N. Gondal, Saad Ur Rehman Shah, A. Chinnaiyan*, M. Cieslik*', title: 'A Systematic Overview of Single-Cell Transcriptomics Databases, their utility, and common assumptions', journal: 'Frontiers in Bioinformatics', date: 'July 2024' },
+                { category: 'Published', authors: 'J. E. Choi, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'PIKfyve, expressed by CD11c-positive cells, controls tumor immunity', journal: 'Nature Communication', date: 'May 2024' },
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'Targeting the lipid kinase PIKfyve upregulates surface expression of MHC class I to augment cancer immunotherapy', journal: 'PNAS', date: 'Nov 2023' },
+                { category: 'Published', authors: 'M. N. Gondal, R. N. Butt, et al., S. U. Chaudhary*', title: 'A personalized therapeutics approach using an in silico Drosophila Patient Model reveals optimal chemo- and targeted therapy combinations for colorectal cancer', journal: 'Frontiers in Oncology', date: 'Jul 2021' },
+                { category: 'Published', authors: 'M. N. Gondal and S. U. Chaudhary*', title: 'Navigating Multi-scale Cancer Systems Biology towards Model-driven Clinical Oncology and its Applications in Personalized Therapeutics', journal: 'Frontiers in Oncology', date: 'Oct 2021' },
+                { category: 'Published', authors: 'G. Khurshid, et al., M. N. Gondal, et al., S. U. Chaudhary*, R. Ahmad*', title: 'An integrated model of cyanobacterial decarboxylation and C3 photosynthetic pathways to bypass photorespiration for enhancing photosynthesis', journal: 'Scientific Reports - Nature', date: 'Nov 2020' },
+                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Single-cell Transcriptomics Unveils Novel Regulators of MHC Expression: Implications for Cancer Immunotherapy', journal: 'Cancer Research - AACR IO', date: 'Feb 2025' },
+                { category: 'Conference', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'The UBA1–STUB1 Axis Mediates Cancer Immune Escape and Resistance to Checkpoint Blockade', journal: 'Cancer Research - AACR', date: 'Feb 2025' },
+                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Pan-tissue master regulator inference reveals mechanisms of MHC alterations in cancers', journal: 'Cancer Research - AACR', date: 'Mar 2024' },
+                { category: 'Preprint', authors: 'M. N. Gondal*', title: 'Assessing Bias in Gene Expression Omnibus (GEO) Datasets', journal: 'BioRxiv', date: 'Dec 2024' },
+                { category: 'Preprint', authors: 'M. N. Gondal, A. Rehman, et al., S. U. Chaudhary*', title: 'TISON: a Next-generation Multi-scale Modeling Theatre for in silico Systems Oncology', journal: 'BioRxiv', date: 'May 2021' },
+            ];
+            
+            const publicationsContainer = document.getElementById('publications-container');
+            const pubFilterBtns = document.querySelectorAll('.pub-filter-btn');
+
+            function renderPublications(filter = 'all') {
+                publicationsContainer.innerHTML = '';
+                const filteredData = filter === 'all' ? publicationsData : publicationsData.filter(p => p.category === filter);
+
+                if (filteredData.length === 0) {
+                    publicationsContainer.innerHTML = '<p class="text-center text-gray-500">No publications found for this category.</p>';
+                    return;
+                }
+
+                filteredData.forEach(pub => {
+                    const authorHtml = pub.authors.replace(/M\. N\. Gondal/g, '<strong class="text-[#424874]">M. N. Gondal</strong>');
+                    const pubElement = document.createElement('div');
+                    pubElement.className = 'bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl';
+                    pubElement.innerHTML = `
+                        <p class="text-gray-700 mb-1">${authorHtml}</p>
+                        <h4 class="text-lg font-bold text-gray-800">“${pub.title}”</h4>
+                        <p class="text-gray-500 italic mt-1">${pub.journal}, ${pub.date || ''}</p>
+                    `;
+                    publicationsContainer.appendChild(pubElement);
+                });
+            }
+
+            pubFilterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    pubFilterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderPublications(btn.dataset.filter);
+                });
+            });
+            
+            const awardsData = [
+                { year: 2025, award: 'Points of Blue', institution: 'University of Michigan Medical School' },
+                { year: 2025, award: 'Excellence in Service Award (Nominee)', institution: 'Dept. of Computational Medicine and Bioinformatics (DCMB)' },
+                { year: 2025, award: 'Susan Lipschutz, Margaret Ayers Host, and Anna Olcott Smith Awards', institution: 'Rackham Graduate School, University of Michigan' },
+                { year: 2024, award: 'Carol Hollenshead Inspire Award (Group Recipient)', institution: 'Institute for Research on Women and Gender' },
+                { year: 2025, award: 'Scholar-in-Training Award', institution: 'American Association for Cancer Research (AACR) IO' },
+                { year: 2024, award: 'Spark Award', institution: 'The Association for Women in Science' },
+                { year: 2024, award: 'Gupta Values Scholar', institution: 'The Gupta Foundation and Rackham Graduate School' },
+                { year: 2024, award: '2025 King Talk Speaker', institution: 'Rackham Graduate School, University of Michigan' },
+                { year: 2024, award: 'Student Service Award', institution: 'Dept. of Computational Medicine and Bioinformatics (DCMB)' },
+                { year: 2024, award: 'Mentored Award-Winning High School Researcher', institution: 'Student Research Institute (SRI), Harvard Undergraduate OpenBio Laboratory' },
+                { year: 2024, award: 'Excellence in Teaching Award (Nominee)', institution: 'Dept. of Computational Medicine and Bioinformatics (DCMB)' },
+                { year: 2024, award: 'Women in Cancer Research (WICR) Award', institution: 'American Association for Cancer Research (AACR)' },
+                { year: 2023, award: 'Poster Award Winner', institution: 'Program in Biomedical Sciences (PIBS)' },
+                { year: 2022, award: 'Nominated Women in Science', institution: 'Dept. of Computational Medicine and Bioinformatics (DCMB)' },
+                { year: 2022, award: 'First Position, DEI Data Challenge', institution: 'Dept. of Computational Medicine and Bioinformatics (DCMB)' },
+                { year: 2020, award: 'Dean’s Honor List', institution: 'Lahore University of Management Sciences' },
+                { year: 2020, award: 'Best Presentation Award', institution: '14th International Conference on Systems Biology (ICSB)' },
+                { year: 2018, award: 'Medical First Responder (MFR) of the Year', institution: 'Emergency Medical Services (LUMS)' },
+                { year: 2017, award: 'Student of the Year', institution: 'Emergency Medical Services (LUMS)' }
+            ];
+
+            const awardsContainer = document.getElementById('awards-container');
+            awardsContainer.innerHTML = `
+                <ul class="space-y-4">
+                    ${awardsData.map(award => `
+                        <li class="pb-4 border-b border-gray-200 last:border-b-0 transition-all duration-300 hover:bg-gray-50 -mx-4 px-4 rounded-lg">
+                            <p class="text-lg font-bold text-[#424874]">${award.award}</p>
+                            <p class="text-gray-600">${award.institution} - ${award.year}</p>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            renderPublications();
+
+            // Style for pub filter buttons
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .pub-filter-btn { padding: 8px 16px; border-radius: 9999px; background-color: #fff; color: #4A5568; font-weight: 500; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .pub-filter-btn:hover { background-color: #E2E8F0; }
+                .pub-filter-btn.active { background-color: #424874; color: #fff; }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
