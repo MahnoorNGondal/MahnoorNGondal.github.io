@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: The application has been restructured into a multi-view Single Page Application (SPA) to better organize the extensive information from the CV. A top-level tabbed navigation allows users to switch between thematic sections: a main Dashboard for a high-level overview, an Academic section for deep dives into research and publications, a Consulting section for business-focused experience, and an Awards section for recognitions. This modular structure prevents information overload and allows users (like recruiters) to quickly navigate to the content most relevant to them, improving usability and content discovery. -->
+    <!-- Application Structure Plan: The application has been restructured into a multi-view Single Page Application (SPA) to better organize the extensive information from the CV. A top-level tabbed navigation allows users to switch between thematic sections: a main Dashboard for a high-level overview, an Academic section for deep dives into research and publications, and an Awards section for recognitions. This modular structure prevents information overload and allows users (like recruiters) to quickly navigate to the content most relevant to them, improving usability and content discovery. -->
     <!-- Visualization & Content Choices: 
         - Publications List: Report Info -> Full list of publications from CV. Goal -> Organize/Inform. Viz -> Filterable card-based list. Interaction -> Category filtering (Published, In Review, etc.), highlighted author name. Justification -> Manages a large number of entries, making it easy for users to find specific types of publications and see the candidate's contributions clearly. Method -> HTML/JS.
         - Awards List: Report Info -> Awards from CV. Goal -> Inform. Viz -> Chronological list with descriptions. Interaction -> None. Justification -> A clean, straightforward presentation is most effective for highlighting achievements and recognitions. Method -> HTML/Tailwind.
@@ -76,7 +76,6 @@
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="dashboard">Dashboard</a>
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="academic">Academic & Publications</a>
-                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="consulting">Consulting & Leadership</a>
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="awards">Awards</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-600">
@@ -86,7 +85,6 @@
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 border-t">
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="dashboard">Dashboard</a>
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="academic">Academic & Publications</a>
-             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="consulting">Consulting & Leadership</a>
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="awards">Awards</a>
         </div>
     </header>
@@ -150,37 +148,6 @@
                     <button class="pub-filter-btn" data-filter="Preprint">Preprint</button>
                 </div>
                 <div id="publications-container" class="space-y-6"></div>
-            </section>
-        </div>
-
-        <div id="view-consulting" class="view-content hidden">
-            <section id="consulting-experience" class="mb-20 fade-in">
-                 <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Consulting & Leadership</h2>
-                 <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">Beyond research, I have actively pursued experience in consulting and leadership, applying analytical skills to solve business challenges and mentoring others in STEM.</p>
-
-                <div class="bg-white p-8 rounded-xl shadow-lg mb-8 transition-shadow duration-300 hover:shadow-xl">
-                    <h3 class="text-2xl font-bold text-[#424874]">miLEAD Consulting Group</h3>
-                    <p class="text-gray-500 font-medium mb-4">Director of Professional Development | Project Manager & Consultant</p>
-                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                        <li>Uncovered a $500M market opportunity for a novel prosthetic device, proposing design changes projected to drive a 20% revenue increase.</li>
-                        <li>Developed an exit strategy that raised projected profitability from $2M to $8M (300%) by identifying untapped buyer segments.</li>
-                        <li>Elevated member engagement by 40% by designing and executing 5 tailored career panels with industry leaders.</li>
-                        <li>Increased junior member placement rates by 30% by launching case interview training for 40+ members.</li>
-                    </ul>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
-                        <h3 class="text-xl font-bold text-[#424874]">Girls Who Code (GWC)</h3>
-                        <p class="text-gray-500 font-medium mb-2">Executive Committee Lead</p>
-                        <p class="text-gray-700">Expanded Python curriculum offerings 5-fold and increased the instructor pool 4-fold in 3 months.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
-                        <h3 class="text-xl font-bold text-[#424874]">Consulting Doc</h3>
-                        <p class="text-gray-500 font-medium mb-2">Founder & Consultant</p>
-                        <p class="text-gray-700">Achieved a 40% success rate with U.S. Ph.D. and master's admissions by launching an academic consulting guide.</p>
-                    </div>
-                </div>
             </section>
         </div>
 
