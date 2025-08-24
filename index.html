@@ -10,31 +10,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: The application has been restructured into a multi-view Single Page Application (SPA) to better organize the extensive information from the CV. A top-level tabbed navigation allows users to switch between thematic sections: a main Dashboard for a high-level overview, an Academic section for deep dives into research and publications, and an Awards section for recognitions. This modular structure prevents information overload and allows users (like recruiters) to quickly navigate to the content most relevant to them, improving usability and content discovery. -->
+    <!-- Application Structure Plan: The application is a multi-view SPA. The navigation now includes 'Dashboard', 'Academic & Publications', 'Awards', and 'In The News'. The Dashboard has been redesigned from a skills chart to a 'Project Spotlight' section, providing narrative descriptions of key projects and the specific skills used. This change offers a more compelling and detailed view of the candidate's expertise. The new 'In The News' page aggregates external validation of the candidate's work, building credibility. -->
     <!-- Visualization & Content Choices: 
-        - Publications List: Report Info -> Full list of publications from CV. Goal -> Organize/Inform. Viz -> Filterable card-based list. Interaction -> Category filtering (Published, In Review, etc.), highlighted author name. Justification -> Manages a large number of entries, making it easy for users to find specific types of publications and see the candidate's contributions clearly. Method -> HTML/JS.
-        - Awards List: Report Info -> Awards from CV. Goal -> Inform. Viz -> Chronological list with descriptions. Interaction -> None. Justification -> A clean, straightforward presentation is most effective for highlighting achievements and recognitions. Method -> HTML/Tailwind.
-        - Other elements (KPIs, Radar Chart, Timeline) remain as before but are now logically placed within the new thematic sections to maintain context. -->
+        - Project Spotlight: Report Info -> Key research projects. Goal -> Inform/Convince. Viz -> Descriptive cards. Interaction -> None. Justification -> Provides a narrative context for skills, which is more persuasive than a simple list or chart. Method -> HTML/Tailwind.
+        - Publications with Skills: Report Info -> Publications list. Goal -> Inform/Detail. Viz -> Cards with skill tags. Interaction -> Filtering. Justification -> Directly connects publications to technical abilities, answering a key question for technical recruiters. Method -> HTML/JS.
+        - Featured Articles: Report Info -> External articles/videos. Goal -> Build Credibility. Viz -> Image/video cards with links. Interaction -> External links. Justification -> Showcases public recognition and impact beyond academic work. Method -> HTML/JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8F7F4;
             color: #2C3E50;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 450px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 450px;
-            }
         }
         .timeline-item::before {
             content: '';
@@ -64,6 +50,14 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .skill-tag {
+            background-color: #EAEAF2;
+            color: #424874;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -77,6 +71,7 @@
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="dashboard">Dashboard</a>
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="academic">Academic & Publications</a>
                 <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="awards">Awards</a>
+                <a href="#" class="nav-link pb-1 transition-colors duration-300" data-view="featured">In The News</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -86,6 +81,7 @@
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="dashboard">Dashboard</a>
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="academic">Academic & Publications</a>
              <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="awards">Awards</a>
+             <a href="#" class="nav-link-mobile block py-2 text-gray-600" data-view="featured">In The News</a>
         </div>
     </header>
 
@@ -108,15 +104,40 @@
             </section>
 
             <section id="dashboard-content" class="mb-20 fade-in">
-                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Career Dashboard</h2>
-                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">This dashboard provides a high-level overview of my core technical capabilities and key areas of expertise.</p>
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Project Spotlight</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">This section highlights key projects that demonstrate my expertise in applying advanced computational methods to solve complex biological problems.</p>
                 
-                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                    <h3 class="text-2xl font-bold text-center mb-6 text-[#424874]">Core Competencies</h3>
-                    <div class="chart-container">
-                        <canvas id="skillsChart"></canvas>
+                <div class="space-y-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                        <h3 class="text-2xl font-bold text-[#424874] mb-2">MHC Regulation in Cancer</h3>
+                        <p class="text-gray-700 mb-4">Using advanced deep learning on single-cell data to decode cell-type specific regulatory mechanisms of MHC expression in benign and tumor cells, and its involvement in clinical outcomes for immunotherapy.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">Deep Learning (PyTorch)</span>
+                            <span class="skill-tag">Single-Cell RNA-seq</span>
+                            <span class="skill-tag">Transcriptional Regulation</span>
+                            <span class="skill-tag">Immunoinformatics</span>
+                        </div>
                     </div>
-                     <p class="text-sm text-gray-500 text-center mt-4">Proficiency across key technical domains. Hover over a point for details.</p>
+                     <div class="bg-white p-8 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                        <h3 class="text-2xl font-bold text-[#424874] mb-2">Single-cell RNA-seq Data Descriptor</h3>
+                        <p class="text-gray-700 mb-4">Developed a user-friendly R Shiny web application for exploring single-cell RNA-seq datasets that contain immune checkpoint blockade (ICB) treatment information, making complex data accessible to a broader scientific audience.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">R & R Shiny</span>
+                            <span class="skill-tag">Data Visualization</span>
+                            <span class="skill-tag">UI/UX Design</span>
+                            <span class="skill-tag">Single-cell Analysis</span>
+                        </div>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                        <h3 class="text-2xl font-bold text-[#424874] mb-2">TISON: Theatre for in silico Systems Oncology</h3>
+                        <p class="text-gray-700 mb-4">Led development of a next-generation, web-based, "zero-code" multi-scale modeling and simulation platform for oncology. TISON seamlessly couples information from biomolecular networks to organoid geometries.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">Systems Biology</span>
+                            <span class="skill-tag">Web Development</span>
+                            <span class="skill-tag">Computational Modeling</span>
+                            <span class="skill-tag">Software Architecture</span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -145,6 +166,7 @@
                     <button class="pub-filter-btn active" data-filter="all">All</button>
                     <button class="pub-filter-btn" data-filter="Published">Published</button>
                     <button class="pub-filter-btn" data-filter="Conference">Conference</button>
+                    <button class="pub-filter-btn" data-filter="eBook Chapter">eBook Chapter</button>
                     <button class="pub-filter-btn" data-filter="Preprint">Preprint</button>
                 </div>
                 <div id="publications-container" class="space-y-6"></div>
@@ -156,6 +178,15 @@
                 <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">Awards & Recognition</h2>
                 <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">A selection of honors and awards received in recognition of academic excellence, research contributions, and leadership.</p>
                 <div id="awards-container" class="bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                </div>
+            </section>
+        </div>
+        
+        <div id="view-featured" class="view-content hidden">
+            <section id="featured-articles" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-4 text-[#424874]">In The News</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">A collection of featured articles, interviews, and talks highlighting my research, mentorship, and contributions to the community.</p>
+                <div id="featured-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 </div>
             </section>
         </div>
@@ -184,11 +215,9 @@
                 const targetView = document.getElementById(`view-${viewId}`);
                 targetView.classList.remove('hidden');
                 
-                // Trigger fade-in for sections within the new view
                 setTimeout(() => {
                     targetView.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
                 }, 100);
-
 
                 navLinks.forEach(link => {
                     link.classList.toggle('active', link.dataset.view === viewId);
@@ -211,31 +240,6 @@
             });
             
             switchView('dashboard');
-
-            const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
-            const skillsChart = new Chart(skillsChartCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Machine Learning', 'Python (PyTorch, Pandas)', 'R & R Shiny', 'Genomics (NGS)', 'Multi-omics Integration', 'Statistical Modeling', 'HPC Computing', 'SQL & Databases'],
-                    datasets: [{
-                        label: 'Proficiency',
-                        data: [95, 90, 85, 90, 92, 88, 80, 75],
-                        backgroundColor: 'rgba(66, 72, 116, 0.2)',
-                        borderColor: 'rgba(66, 72, 116, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(66, 72, 116, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(66, 72, 116, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { r: { angleLines: { color: 'rgba(44, 62, 80, 0.2)' }, grid: { color: 'rgba(44, 62, 80, 0.2)' }, pointLabels: { font: { size: 12 }, color: '#2C3E50' }, ticks: { backdropColor: 'transparent', color: '#2C3E50', stepSize: 20 }, suggestedMin: 0, suggestedMax: 100 } },
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `${context.dataset.label}: ${context.raw}%`; } } } }
-                }
-            });
 
             const timelineData = [
                 { id: 'gsk', role: 'Computational Biologist Intern', company: 'GlaxoSmithKline (GSK)', date: 'May 2024 – Aug 2024', details: ['Led the design and implementation of a novel machine learning tool that accelerated drug target discovery by 75% and was integrated division-wide.', 'Improved lupus severity prediction accuracy by 40% by developing a predictive model based on genetic signatures identified from a 200-patient multi-omic dataset.', 'Presented findings to senior leadership, providing key insights that informed the direction of preclinical research programs.'] },
@@ -272,24 +276,28 @@
             if (timelineData.length > 0) displayTimelineDetails(timelineData[0].id);
 
             const publicationsData = [
-                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'CDK12/13 inactivation triggers STING-mediated anti-tumor immunity in pre-clinical models', journal: 'The Journal of Clinical Investigation', date: 'July 2025' },
-                { category: 'Published', authors: 'S. Eyunni, et al., M. N. Gondal, et al., A. Parolia*', title: 'Divergent FOXA1 mutations drive prostate tumorigenesis and therapy-resistant cellular plasticity', journal: 'Science', date: 'June 2025' },
-                { category: 'Published', authors: 'R. N. Butt, et al., M. N. Gondal, et al., S. U. Chaudhary*', title: 'CanSeer: A Translational Methodology for Developing Personalized Cancer Models and Therapeutics', journal: 'Scientific Reports - Nature', date: 'April 2025' },
-                { category: 'Published', authors: 'M. N. Gondal, Hafiz Muhammad Umer Farooqi*', title: 'Single-Cell Transcriptomic Approaches for Decoding Non-Coding RNA Mechanisms in Colorectal Cancer', journal: 'Non-Coding RNA', date: 'March 2025' },
-                { category: 'Published', authors: 'M. N. Gondal, M. Cieslik, A. Chinnaiyan*', title: 'Integrated cancer cell-specific single-cell RNA-seq datasets of immune checkpoint blockade-treated patients', journal: 'Scientific Data - Nature', date: 'Jan 2025' },
-                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan*', title: 'The UBA1-STUB1 axis mediates cancer immune escape and resistance to checkpoint blockade', journal: 'Cancer Discovery', date: 'Nov 2024' },
-                { category: 'Published', authors: 'Emilee Youn, M. N. Gondal*', title: 'Pan-tissue Mapping of Transcription Factor Activity Scores Reveals Robust Markers Across Cell Types and Tissue', journal: 'The Young Researcher', date: 'Oct 2024' },
-                { category: 'Published', authors: 'M. N. Gondal, Saad Ur Rehman Shah, A. Chinnaiyan*, M. Cieslik*', title: 'A Systematic Overview of Single-Cell Transcriptomics Databases, their utility, and common assumptions', journal: 'Frontiers in Bioinformatics', date: 'July 2024' },
-                { category: 'Published', authors: 'J. E. Choi, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'PIKfyve, expressed by CD11c-positive cells, controls tumor immunity', journal: 'Nature Communication', date: 'May 2024' },
-                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'Targeting the lipid kinase PIKfyve upregulates surface expression of MHC class I to augment cancer immunotherapy', journal: 'PNAS', date: 'Nov 2023' },
-                { category: 'Published', authors: 'M. N. Gondal, R. N. Butt, et al., S. U. Chaudhary*', title: 'A personalized therapeutics approach using an in silico Drosophila Patient Model reveals optimal chemo- and targeted therapy combinations for colorectal cancer', journal: 'Frontiers in Oncology', date: 'Jul 2021' },
-                { category: 'Published', authors: 'M. N. Gondal and S. U. Chaudhary*', title: 'Navigating Multi-scale Cancer Systems Biology towards Model-driven Clinical Oncology and its Applications in Personalized Therapeutics', journal: 'Frontiers in Oncology', date: 'Oct 2021' },
-                { category: 'Published', authors: 'G. Khurshid, et al., M. N. Gondal, et al., S. U. Chaudhary*, R. Ahmad*', title: 'An integrated model of cyanobacterial decarboxylation and C3 photosynthetic pathways to bypass photorespiration for enhancing photosynthesis', journal: 'Scientific Reports - Nature', date: 'Nov 2020' },
-                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Single-cell Transcriptomics Unveils Novel Regulators of MHC Expression: Implications for Cancer Immunotherapy', journal: 'Cancer Research - AACR IO', date: 'Feb 2025' },
-                { category: 'Conference', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'The UBA1–STUB1 Axis Mediates Cancer Immune Escape and Resistance to Checkpoint Blockade', journal: 'Cancer Research - AACR', date: 'Feb 2025' },
-                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Pan-tissue master regulator inference reveals mechanisms of MHC alterations in cancers', journal: 'Cancer Research - AACR', date: 'Mar 2024' },
-                { category: 'Preprint', authors: 'M. N. Gondal*', title: 'Assessing Bias in Gene Expression Omnibus (GEO) Datasets', journal: 'BioRxiv', date: 'Dec 2024' },
-                { category: 'Preprint', authors: 'M. N. Gondal, A. Rehman, et al., S. U. Chaudhary*', title: 'TISON: a Next-generation Multi-scale Modeling Theatre for in silico Systems Oncology', journal: 'BioRxiv', date: 'May 2021' },
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'CDK12/13 inactivation triggers STING-mediated anti-tumor immunity in pre-clinical models', journal: 'The Journal of Clinical Investigation', date: 'July 2025', skills: ['Differential Gene Expression', 'Pathway Analysis', 'TCGA Data Mining'] },
+                { category: 'Published', authors: 'S. Eyunni, et al., M. N. Gondal, et al., A. Parolia*', title: 'Divergent FOXA1 mutations drive prostate tumorigenesis and therapy-resistant cellular plasticity', journal: 'Science', date: 'June 2025', skills: ['Multi-omics Analysis', 'Genomic Data Visualization', 'Mouse Model Analysis'] },
+                { category: 'Published', authors: 'R. N. Butt, et al., M. N. Gondal, et al., S. U. Chaudhary*', title: 'CanSeer: A Translational Methodology for Developing Personalized Cancer Models and Therapeutics', journal: 'Scientific Reports - Nature', date: 'April 2025', skills: ['Translational Bioinformatics', 'Personalized Medicine', 'Computational Modeling'] },
+                { category: 'Published', authors: 'M. N. Gondal, Hafiz Muhammad Umer Farooqi*', title: 'Single-Cell Transcriptomic Approaches for Decoding Non-Coding RNA Mechanisms in Colorectal Cancer', journal: 'Non-Coding RNA', date: 'March 2025', skills: ['Single-cell RNA-seq', 'Seurat/Scanpy', 'Regulatory Network Analysis'] },
+                { category: 'Published', authors: 'M. N. Gondal, M. Cieslik, A. Chinnaiyan*', title: 'Integrated cancer cell-specific single-cell RNA-seq datasets of immune checkpoint blockade-treated patients', journal: 'Scientific Data - Nature', date: 'Jan 2025', skills: ['Data Integration', 'Database Curation', 'Single-cell Analysis'] },
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan*', title: 'The UBA1-STUB1 axis mediates cancer immune escape and resistance to checkpoint blockade', journal: 'Cancer Discovery', date: 'Nov 2024', skills: ['Functional Genomics', 'Immune Escape Mechanisms', 'Pre-clinical Model Analysis'] },
+                { category: 'Published', authors: 'Emilee Youn, M. N. Gondal*', title: 'Pan-tissue Mapping of Transcription Factor Activity Scores Reveals Robust Markers Across Cell Types and Tissue', journal: 'The Young Researcher', date: 'Oct 2024', skills: ['Transcription Factor Analysis', 'Biomarker Discovery', 'Pan-tissue Analysis'] },
+                { category: 'Published', authors: 'M. N. Gondal, Saad Ur Rehman Shah, A. Chinnaiyan*, M. Cieslik*', title: 'A Systematic Overview of Single-Cell Transcriptomics Databases, their utility, and common assumptions', journal: 'Frontiers in Bioinformatics', date: 'July 2024', skills: ['Systematic Review', 'Database Analysis', 'scRNA-seq Methodologies'] },
+                { category: 'Published', authors: 'J. E. Choi, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'PIKfyve, expressed by CD11c-positive cells, controls tumor immunity', journal: 'Nature Communication', date: 'May 2024', skills: ['Tumor Immunology', 'Cell-specific Expression Analysis', 'Kinase Signaling'] },
+                { category: 'Published', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. M. Chinnaiyan', title: 'Targeting the lipid kinase PIKfyve upregulates surface expression of MHC class I to augment cancer immunotherapy', journal: 'PNAS', date: 'Nov 2023', skills: ['Immunotherapy', 'MHC Class I Regulation', 'Drug Target Identification'] },
+                { category: 'Published', authors: 'M. N. Gondal, R. N. Butt, et al., S. U. Chaudhary*', title: 'A personalized therapeutics approach using an in silico Drosophila Patient Model reveals optimal chemo- and targeted therapy combinations for colorectal cancer', journal: 'Frontiers in Oncology', date: 'Jul 2021', skills: ['Systems Biology Modeling', 'Personalized Therapeutics', 'Network Analysis'] },
+                { category: 'Published', authors: 'M. N. Gondal and S. U. Chaudhary*', title: 'Navigating Multi-scale Cancer Systems Biology towards Model-driven Clinical Oncology and its Applications in Personalized Therapeutics', journal: 'Frontiers in Oncology', date: 'Oct 2021', skills: ['Cancer Systems Biology', 'Clinical Oncology Models', 'Review'] },
+                { category: 'Published', authors: 'G. Khurshid, et al., M. N. Gondal, et al., S. U. Chaudhary*, R. Ahmad*', title: 'An integrated model of cyanobacterial decarboxylation and C3 photosynthetic pathways to bypass photorespiration for enhancing photosynthesis', journal: 'Scientific Reports - Nature', date: 'Nov 2020', skills: ['Metabolic Modeling', 'Photosynthesis Pathways', 'Bioengineering'] },
+                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Single-cell Transcriptomics Unveils Novel Regulators of MHC Expression: Implications for Cancer Immunotherapy', journal: 'Cancer Research - AACR IO', date: 'Feb 2025', skills: ['Single-cell Transcriptomics', 'MHC Regulation', 'Immunotherapy Biomarkers'] },
+                { category: 'Conference', authors: 'Y. Bao, et al., M. N. Gondal, et al., A. Chinnaiyan*', title: 'The UBA1–STUB1 Axis Mediates Cancer Immune Escape and Resistance to Checkpoint Blockade', journal: 'Cancer Research - AACR', date: 'Feb 2025', skills: ['Immune Escape', 'Checkpoint Blockade', 'Functional Genomics'] },
+                { category: 'Conference', authors: 'M. N. Gondal, Rahul Manna, Yi Bao, M. Cieslik, A. Chinnaiyan*', title: 'Pan-tissue master regulator inference reveals mechanisms of MHC alterations in cancers', journal: 'Cancer Research - AACR', date: 'Mar 2024', skills: ['Master Regulator Analysis', 'Pan-cancer Analysis', 'MHC Regulation'] },
+                { category: 'Conference', authors: 'P. Borker, et al., M. N. Gondal, et al., W. Zou*', title: 'Targeting the lipid kinase PIKfyve upregulates surface expression of MHC class I to augment cancer immunotherapy', journal: 'Cancer Research - AACR', date: 'Mar 2024', skills: ['Drug Targeting', 'Immunotherapy', 'MHC Class I'] },
+                { category: 'Conference', authors: 'M. N. Gondal, et al., S. U. Chaudhary*', title: 'A Next-Generation Multi-scale Modeling Theatre for In Silico Oncology', journal: '14th International Conference on Systems Biology (ICSB 2020)', date: 'Jan 2020', skills: ['Multi-scale Modeling', 'Software Development', 'Systems Oncology'] },
+                { category: 'eBook Chapter', authors: 'M. N. Gondal and S. U. Chaudhary*', title: 'Navigating Multi-Scale Cancer Systems Biology Towards Model-Driven Clinical Oncology and Its Applications in Personalized Therapeutics', journal: 'Combinatorial approaches for cancer treatment', date: '2022', skills: ['Systems Biology', 'Clinical Oncology', 'Review'] },
+                { category: 'eBook Chapter', authors: 'M. N. Gondal, R. N. Butt, et al., S. U. Chaudhary*', title: 'A Personalized Therapeutics Approach Using an In Silico Drosophila Patient Model', journal: 'Combinatorial approaches for cancer treatment', date: '2022', skills: ['In Silico Modeling', 'Personalized Medicine', 'Drosophila Models'] },
+                { category: 'Preprint', authors: 'M. N. Gondal*', title: 'Assessing Bias in Gene Expression Omnibus (GEO) Datasets', journal: 'BioRxiv', date: 'Dec 2024', skills: ['Data Bias Analysis', 'GEO Database', 'Statistical Analysis'] },
+                { category: 'Preprint', authors: 'M. N. Gondal, A. Rehman, et al., S. U. Chaudhary*', title: 'TISON: a Next-generation Multi-scale Modeling Theatre for in silico Systems Oncology', journal: 'BioRxiv', date: 'May 2021', skills: ['Computational Modeling', 'Software Development', 'Systems Oncology'] },
             ];
             
             const publicationsContainer = document.getElementById('publications-container');
@@ -298,21 +306,15 @@
             function renderPublications(filter = 'all') {
                 publicationsContainer.innerHTML = '';
                 const filteredData = filter === 'all' ? publicationsData : publicationsData.filter(p => p.category === filter);
-
                 if (filteredData.length === 0) {
-                    publicationsContainer.innerHTML = '<p class="text-center text-gray-500">No publications found for this category.</p>';
-                    return;
+                    publicationsContainer.innerHTML = '<p class="text-center text-gray-500">No publications found for this category.</p>'; return;
                 }
-
                 filteredData.forEach(pub => {
                     const authorHtml = pub.authors.replace(/M\. N\. Gondal/g, '<strong class="text-[#424874]">M. N. Gondal</strong>');
+                    const skillsHtml = pub.skills ? `<div class="flex flex-wrap gap-2 mt-3">${pub.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>` : '';
                     const pubElement = document.createElement('div');
                     pubElement.className = 'bg-white p-6 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-xl';
-                    pubElement.innerHTML = `
-                        <p class="text-gray-700 mb-1">${authorHtml}</p>
-                        <h4 class="text-lg font-bold text-gray-800">“${pub.title}”</h4>
-                        <p class="text-gray-500 italic mt-1">${pub.journal}, ${pub.date || ''}</p>
-                    `;
+                    pubElement.innerHTML = `<p class="text-gray-700 mb-1">${authorHtml}</p><h4 class="text-lg font-bold text-gray-800">“${pub.title}”</h4><p class="text-gray-500 italic mt-1">${pub.journal}, ${pub.date || ''}</p>${skillsHtml}`;
                     publicationsContainer.appendChild(pubElement);
                 });
             }
@@ -348,20 +350,41 @@
             ];
 
             const awardsContainer = document.getElementById('awards-container');
-            awardsContainer.innerHTML = `
-                <ul class="space-y-4">
-                    ${awardsData.map(award => `
-                        <li class="pb-4 border-b border-gray-200 last:border-b-0 transition-all duration-300 hover:bg-gray-50 -mx-4 px-4 rounded-lg">
-                            <p class="text-lg font-bold text-[#424874]">${award.award}</p>
-                            <p class="text-gray-600">${award.institution} - ${award.year}</p>
-                        </li>
-                    `).join('')}
-                </ul>
-            `;
+            awardsContainer.innerHTML = `<ul class="space-y-4">${awardsData.map(award => `<li class="pb-4 border-b border-gray-200 last:border-b-0 transition-all duration-300 hover:bg-gray-50 -mx-4 px-4 rounded-lg"><p class="text-lg font-bold text-[#424874]">${award.award}</p><p class="text-gray-600">${award.institution} - ${award.year}</p></li>`).join('')}</ul>`;
+
+            const featuredArticlesData = [
+                { title: 'King Talk: Mentorship Matters', source: 'Rackham Graduate School', url: 'https://www.youtube.com/watch?v=XkMEghUPQdo', type: 'video', img: 'https://i.ytimg.com/vi/XkMEghUPQdo/hqdefault.jpg' },
+                { title: 'Advancing Cancer Immunology and Fostering Career Skills', source: 'U-M Medical School | Points of Blue', url: 'https://medschool.umich.edu/points-blue/mahnoor-gondal-phd-candidate-advancing-cancer-immunology-and-fostering-career-skills-others', type: 'article', img: 'https://placehold.co/600x400/DCD6F7/424874?text=Article' },
+                { title: 'U-M Girls Who Code Receive Inspire Award', source: 'U-M Medical School | Department News', url: 'https://medschool.umich.edu/department-news/u-m-girls-who-code-receive-carol-hollenshead-inspire-award-excellence-promoting-equity-and-social', type: 'article', img: 'https://placehold.co/600x400/A6B1E1/FFFFFF?text=Article' },
+                { title: 'Spark Award Recipient', source: 'Association for Women in Science (AWIS)', url: 'https://awis.org/annual-awards/', type: 'article', img: 'https://placehold.co/600x400/424874/FFFFFF?text=Article' }
+            ];
+
+            const featuredContainer = document.getElementById('featured-container');
+            function renderFeaturedArticles() {
+                featuredContainer.innerHTML = '';
+                featuredArticlesData.forEach(item => {
+                    const itemElement = document.createElement('a');
+                    itemElement.href = item.url;
+                    itemElement.target = '_blank';
+                    itemElement.rel = 'noopener noreferrer';
+                    itemElement.className = 'block bg-white rounded-xl shadow-lg overflow-hidden group transition-shadow duration-300 hover:shadow-2xl';
+                    itemElement.innerHTML = `
+                        <div class="relative">
+                            <img src="${item.img}" alt="${item.title}" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
+                            ${item.type === 'video' ? '<div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center"><div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center"><svg class="w-8 h-8 text-[#424874]" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l8.5-5.89a1.5 1.5 0 000-2.538l-8.5-5.89z"></path></svg></div></div>' : ''}
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-[#424874] mb-1 group-hover:text-purple-800 transition-colors duration-300">${item.title}</h3>
+                            <p class="text-gray-500">${item.source}</p>
+                        </div>
+                    `;
+                    featuredContainer.appendChild(itemElement);
+                });
+            }
 
             renderPublications();
+            renderFeaturedArticles();
 
-            // Style for pub filter buttons
             const style = document.createElement('style');
             style.innerHTML = `
                 .pub-filter-btn { padding: 8px 16px; border-radius: 9999px; background-color: #fff; color: #4A5568; font-weight: 500; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
